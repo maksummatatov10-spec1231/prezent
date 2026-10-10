@@ -40,7 +40,7 @@ TRANSITIONS.update({
     "wedge": '<p:transition spd="med" xmlns:p="%s"><p:wedge/></p:transition>' % P_NS,
 })
 
-TOTAL = 12
+TOTAL = 14
 
 
 def pic(slide, name, x, y, w=None, h=None, frame=None, frame_w=Pt(2.5)):
@@ -234,7 +234,8 @@ def gallery(prs, num, img_name, w, h, caption, transition, note=None, desc=None)
     s = new_slide(prs)
     bg = dark_bg(s)
     x = Emu(int((SLIDE_W - w) / 2))
-    y = Inches(0.35)
+    bar_h = Inches(1.55)
+    y = Emu(max(int((SLIDE_H - bar_h - h) / 2), Inches(0.3)))
     p = pic(s, img_name, x, y, w=Emu(int(w)), h=Emu(int(h)), frame=GOLD,
             frame_w=Pt(3))
     lines = [caption]
@@ -319,17 +320,24 @@ def main():
     k05_fandyr(prs)
     from PIL import Image
     specs = [
-        (6, "paint_goryanka_crop.jpg", "«Горянка, идущая за водой»", "push_r",
-         "живопись Коста Хетагурова",
-         "Тяжёлый труд горской женщины — одна из главных тем его кисти."),
-        (7, "paint_popova_crop.jpg", "Портрет А. Я. Поповой", "wipe_l",
-         "живопись Коста Хетагурова",
-         "Анна — та, кого любил поэт: о семье и детях он мечтал до конца дней."),
-        (8, "paint_master_crop.jpg", "«Мастерская художника»", "strips",
-         "живопись Коста Хетагурова",
-         "Коста — основоположник станковой и фресковой живописи в Осетии."),
-        (9, "draw_4.jpg", "Образ Коста в графике", "wedge", None,
-         "Народ хранит память о поэте: его образ живёт в работах многих художников."),
+        (6, "paint_istochnik.jpg", "«К источнику»", "push_r",
+         "холст, масло — Северо-Осетинский художественный музей",
+         "Тяжёлый труд горской женщины — одна из главных тем кисти Коста."),
+        (7, "paint_deti.jpg", "«Дети-каменщики»", "wipe_l",
+         "1886–1891, холст, масло, 194×139 см",
+         "Незавершённый шедевр о детском труде, написанный до первой ссылки."),
+        (8, "paint_stolovaya.jpg", "«Столовая гора»", "strips",
+         "пейзаж, холст, масло",
+         "Горы вокруг Владикавказа — родной пейзаж поэта."),
+        (9, "paint_most.jpg", "«Природный мост»", "wedge",
+         "пейзаж, холст, масло — музей им. М. С. Туганова",
+         "Коста исходил ущелья Кавказа и запечатлел его чудеса."),
+        (10, "paint_angel.jpg", "«Скорбящий ангел»", "cover_r",
+         "холст, масло — церковная живопись Коста",
+         "Он расписывал храмы и положил начало фресковой живописи Осетии."),
+        (11, "paint_self.jpg", "Автопортрет", "comb",
+         "холст, масло — Северо-Осетинский художественный музей",
+         "Художник смотрит на нас через столетие."),
     ]
     for num, name, cap, tr, note, desc in specs:
         with Image.open(os.path.join(ASSETS, name)) as im:
