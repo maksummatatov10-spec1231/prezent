@@ -82,16 +82,18 @@ def bg_cover(slide, name):
     return p
 
 
-def caption_bar(slide, lines, num=None):
-    bar = overlay(slide, 0, Emu(SLIDE_H - Inches(1.05)), SLIDE_W, Inches(1.05),
+def caption_bar(slide, lines):
+    h = Inches(1.05) if len(lines) <= 2 else Inches(1.55)
+    bar = overlay(slide, 0, Emu(SLIDE_H - h), SLIDE_W, h,
                   alpha=62, rounded=False)
     paras = [{"text": lines[0], "size": 20, "bold": True, "color": WHITE,
               "align": PP_ALIGN.CENTER}]
-    if len(lines) > 1:
-        paras.append({"text": lines[1], "size": 14, "color": RGBColor(0xD8, 0xCE, 0xBE),
-                      "align": PP_ALIGN.CENTER, "space_before": 4})
-    box = text(slide, Inches(0.6), Emu(SLIDE_H - Inches(1.0)),
-               Inches(12.13), Inches(0.95), paras, anchor=MSO_ANCHOR.MIDDLE)
+    for extra in lines[1:]:
+        paras.append({"text": extra, "size": 13,
+                      "color": RGBColor(0xD8, 0xCE, 0xBE),
+                      "align": PP_ALIGN.CENTER, "space_before": 3})
+    box = text(slide, Inches(0.6), Emu(SLIDE_H - h + Inches(0.05)),
+               Inches(12.13), h - Inches(0.1), paras, anchor=MSO_ANCHOR.MIDDLE)
     return bar, box
 
 
@@ -112,10 +114,13 @@ def k01_title(prs):
     line.shadow.inherit = False
     years = text(s, Inches(0.7), Inches(4.3), Inches(6.0), Inches(0.6),
                  [{"text": "1859 — 1906", "size": 22, "bold": True, "color": RED}])
-    role = text(s, Inches(0.7), Inches(5.0), Inches(6.2), Inches(1.4),
-                [{"text": "поэт • художник • просветитель", "size": 17, "color": INK},
-                 {"text": "основоположник осетинской литературы", "size": 14,
-                  "color": GREY, "space_before": 4}])
+    role = text(s, Inches(0.7), Inches(5.0), Inches(6.2), Inches(1.9),
+                [{"text": "основоположник осетинской литературы", "size": 16,
+                  "color": INK},
+                 {"text": "и осетинского литературного языка", "size": 16,
+                  "color": INK},
+                 {"text": "поэт • художник • публицист • этнограф", "size": 13,
+                  "color": GREY, "space_before": 6}])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
               tl.wipe(img.shape_id, "right", 900, delay=100),
@@ -135,10 +140,15 @@ def k02_photo(prs):
     head = text(s, Inches(6.0), Inches(1.7), Inches(6.6), Inches(1.6),
                 [{"text": "Коста Леванович", "size": 34, "bold": True, "color": WHITE},
                  {"text": "Хетагуров", "size": 34, "bold": True, "color": WHITE}])
-    sub = text(s, Inches(6.0), Inches(3.4), Inches(6.6), Inches(2.2),
-               [{"text": "осетинский поэт и художник,", "size": 17, "color": RGBColor(0xD8, 0xCE, 0xBE)},
-                {"text": "основоположник осетинского", "size": 17, "color": RGBColor(0xD8, 0xCE, 0xBE)},
-                {"text": "литературного языка", "size": 17, "color": RGBColor(0xD8, 0xCE, 0xBE)}])
+    sub = text(s, Inches(6.0), Inches(3.4), Inches(6.6), Inches(3.2),
+               [{"text": "Родился 15 октября 1859 года", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
+                {"text": "в горном ауле Нар.", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE),
+                 "space_after": 10},
+                {"text": "Учился живописи в Петербургской", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
+                {"text": "академии художеств.", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE),
+                 "space_after": 10},
+                {"text": "Подарил осетинскому народу", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
+                {"text": "литературный язык и поэзию.", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)}])
     slide_number(s, 2, TOTAL)
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
@@ -153,7 +163,8 @@ def k03_nar(prs):
     s = new_slide(prs)
     bg = bg_cover(s, "port_1.jpg")
     bar, box = caption_bar(s, ["Аул Нар — колыбель поэта",
-                               "15 октября 1859, Мамисонское ущелье"])
+                               "Здесь 15 октября 1859 года в семье офицера русской армии родился Коста.",
+                               "Горы Мамисонского ущелья стали главной темой его стихов и картин."])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 400, "withEffect", 0),
               tl.fade(bar.shape_id, 500, delay=300),
@@ -169,13 +180,15 @@ def k04_study(prs):
                frame=GOLD)
     head = text(s, Inches(0.9), Inches(1.5), Inches(6.0), Inches(0.9),
                 [{"text": "Дорога к искусству", "size": 34, "bold": True, "color": WHITE}])
-    items = text(s, Inches(0.95), Inches(2.7), Inches(6.0), Inches(3.4),
-                 [{"text": "Владикавказская прогимназия", "size": 19, "color": WHITE,
-                   "space_after": 14},
-                  {"text": "Ставропольская гимназия", "size": 19, "color": WHITE,
-                   "space_after": 14},
-                  {"text": "Петербургская академия художеств, 1881", "size": 19,
-                   "color": GOLD}])
+    items = text(s, Inches(0.95), Inches(2.7), Inches(6.0), Inches(4.2),
+                 [{"text": "Владикавказская прогимназия и Ставропольская", "size": 15, "color": WHITE},
+                  {"text": "гимназия — здесь открылся дар к слову и кисти.", "size": 15, "color": WHITE,
+                   "space_after": 12},
+                  {"text": "Петербургская академия художеств, 1881 —", "size": 15, "color": GOLD},
+                  {"text": "мечта о живописи стала делом жизни.", "size": 15, "color": GOLD,
+                   "space_after": 12},
+                  {"text": "Из-за бедности покинул академию, но вернул", "size": 15, "color": WHITE},
+                  {"text": "живопись в Осетию: портрет, пейзаж, фреска.", "size": 15, "color": WHITE}])
     slide_number(s, 4, TOTAL)
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
@@ -196,12 +209,16 @@ def k05_fandyr(prs):
     title = text(s, Inches(1.0), Inches(2.3), Inches(11.33), Inches(1.6),
                  [{"text": "«Ирон фæндыр»", "size": 58, "bold": True,
                    "color": GOLD, "align": PP_ALIGN.CENTER}])
-    sub = text(s, Inches(1.5), Inches(4.0), Inches(10.33), Inches(0.7),
-               [{"text": "1899 — первый сборник осетинской поэзии", "size": 20,
+    sub = text(s, Inches(1.5), Inches(4.0), Inches(10.33), Inches(1.0),
+               [{"text": "«Осетинская лира», 1899 — первый сборник осетинской поэзии,", "size": 18,
+                 "color": WHITE, "align": PP_ALIGN.CENTER},
+                {"text": "с него начинается осетинская литература и литературный язык", "size": 18,
                  "color": WHITE, "align": PP_ALIGN.CENTER}])
-    fact = text(s, Inches(1.5), Inches(4.8), Inches(10.33), Inches(0.7),
-                [{"text": "стихотворение «Завещание» переведено на 108 языков",
-                  "size": 15, "color": GREY, "align": PP_ALIGN.CENTER}])
+    fact = text(s, Inches(1.5), Inches(5.15), Inches(10.33), Inches(0.9),
+                [{"text": "В сборнике — стихи о труде, любви и свободе, первые стихи",
+                  "size": 14, "color": GREY, "align": PP_ALIGN.CENTER},
+                 {"text": "для детей на осетинском; «Завещание» переведено на 108 языков",
+                  "size": 14, "color": GREY, "align": PP_ALIGN.CENTER}])
     slide_number(s, 5, TOTAL)
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
@@ -213,16 +230,18 @@ def k05_fandyr(prs):
     return s
 
 
-def gallery(prs, num, img_name, w, h, caption, transition, note=None):
+def gallery(prs, num, img_name, w, h, caption, transition, note=None, desc=None):
     s = new_slide(prs)
     bg = dark_bg(s)
     x = Emu(int((SLIDE_W - w) / 2))
-    y = Inches(0.55)
+    y = Inches(0.35)
     p = pic(s, img_name, x, y, w=Emu(int(w)), h=Emu(int(h)), frame=GOLD,
             frame_w=Pt(3))
     lines = [caption]
     if note:
         lines.append(note)
+    if desc:
+        lines.append(desc)
     bar, box = caption_bar(s, lines)
     slide_number(s, num, TOTAL)
     tl = Timeline()
@@ -238,7 +257,8 @@ def k10_monument(prs):
     s = new_slide(prs)
     bg = bg_cover(s, "monument_bronze.jpg")
     bar, box = caption_bar(s, ["Владикавказ — памятник Коста",
-                               "центральное место города, у гор и Терека"])
+                               "Прах поэта народ перенёс сюда и схоронил на Осетинской горке.",
+                               "Именем Коста названы центральный парк, улицы и театр."])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 400, "withEffect", 0),
               tl.fade(bar.shape_id, 500, delay=300),
@@ -251,7 +271,8 @@ def k11_university(prs):
     s = new_slide(prs)
     bg = bg_cover(s, "hist_2.jpg")
     bar, box = caption_bar(s, ["Северо-Осетинский университет имени К. Л. Хетагурова",
-                               "имя Коста носят улицы, театры и сёла по всему Кавказу"])
+                               "Имя поэта носят университеты, сёла и улицы по всему Кавказу,",
+                               "а его «Ирон фæндыр» переведён на десятки языков мира."])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 400, "withEffect", 0),
               tl.fade(bar.shape_id, 500, delay=300),
@@ -270,8 +291,11 @@ def k12_final(prs):
     quote = text(s, Inches(5.6), Inches(2.4), Inches(6.8), Inches(2.0),
                  [{"text": "«Весь мир —", "size": 44, "bold": True, "color": RED},
                   {"text": "мой храм»", "size": 44, "bold": True, "color": RED}])
-    sub = text(s, Inches(5.6), Inches(4.5), Inches(6.8), Inches(0.9),
-               [{"text": "Коста Хетагуров, 1859—1906", "size": 16, "color": INK}])
+    sub = text(s, Inches(5.6), Inches(4.5), Inches(6.8), Inches(1.6),
+               [{"text": "Коста Хетагуров, 1859—1906", "size": 16, "color": INK},
+                {"text": "Он прожил 46 лет, но на века дал своему народу", "size": 14,
+                 "color": GREY, "space_before": 10},
+                {"text": "литературу, язык и голос.", "size": 14, "color": GREY}])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
               tl.fade(img.shape_id, 800, delay=200),
@@ -296,21 +320,25 @@ def main():
     from PIL import Image
     specs = [
         (6, "paint_goryanka_crop.jpg", "«Горянка, идущая за водой»", "push_r",
-         "живопись Коста Хетагурова"),
+         "живопись Коста Хетагурова",
+         "Тяжёлый труд горской женщины — одна из главных тем его кисти."),
         (7, "paint_popova_crop.jpg", "Портрет А. Я. Поповой", "wipe_l",
-         "той, что любила и была любима"),
+         "живопись Коста Хетагурова",
+         "Анна — та, кого любил поэт: о семье и детях он мечтал до конца дней."),
         (8, "paint_master_crop.jpg", "«Мастерская художника»", "strips",
-         "Коста за работой"),
-        (9, "draw_4.jpg", "Образ Коста в графике", "wedge", None),
+         "живопись Коста Хетагурова",
+         "Коста — основоположник станковой и фресковой живописи в Осетии."),
+        (9, "draw_4.jpg", "Образ Коста в графике", "wedge", None,
+         "Народ хранит память о поэте: его образ живёт в работах многих художников."),
     ]
-    for num, name, cap, tr, note in specs:
+    for num, name, cap, tr, note, desc in specs:
         with Image.open(os.path.join(ASSETS, name)) as im:
             iw, ih = im.size
         max_h = Inches(5.1)
         max_w = Inches(7.5)
         h = min(max_h, Emu(int(max_w * ih / iw)))
         w = Emu(int(h * iw / ih))
-        gallery(prs, num, name, w, h, cap, tr, note)
+        gallery(prs, num, name, w, h, cap, tr, note, desc)
     k10_monument(prs)
     k11_university(prs)
     k12_final(prs)
