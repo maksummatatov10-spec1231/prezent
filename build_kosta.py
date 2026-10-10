@@ -40,7 +40,7 @@ TRANSITIONS.update({
     "wedge": '<p:transition spd="med" xmlns:p="%s"><p:wedge/></p:transition>' % P_NS,
 })
 
-TOTAL = 14
+TOTAL = 15
 
 
 def pic(slide, name, x, y, w=None, h=None, frame=None, frame_w=Pt(2.5)):
@@ -173,6 +173,23 @@ def k03_nar(prs):
     return s
 
 
+def k04_nar_village(prs):
+    s = new_slide(prs)
+    bg = bg_cover(s, "nar_village.jpg")
+    inset = pic(s, "nar_interior.jpg", Inches(8.7), Inches(0.6), w=Inches(4.2),
+                frame=GOLD, frame_w=Pt(3))
+    bar, box = caption_bar(s, ["Село Нар — родина поэта",
+                               "Здесь 15 октября 1859 года родился Коста; ныне — мемориальный дом-музей.",
+                               "Каменные стены, очаг и утварь горцев хранят память о его детстве."])
+    tl = Timeline()
+    tl.group([tl.fade(bg.shape_id, 400, "withEffect", 0),
+              tl.wipe(inset.shape_id, "left", 900, delay=400),
+              tl.fade(bar.shape_id, 500, delay=300),
+              tl.fly(box.shape_id, "from_bottom", 700, delay=500)])
+    attach(s, tl, "cover")
+    return s
+
+
 def k04_study(prs):
     s = new_slide(prs)
     bg = dark_bg(s)
@@ -189,7 +206,7 @@ def k04_study(prs):
                    "space_after": 12},
                   {"text": "Из-за бедности покинул академию, но вернул", "size": 15, "color": WHITE},
                   {"text": "живопись в Осетию: портрет, пейзаж, фреска.", "size": 15, "color": WHITE}])
-    slide_number(s, 4, TOTAL)
+    slide_number(s, 5, TOTAL)
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
               tl.fly(head.shape_id, "from_left", 700, delay=100),
@@ -219,7 +236,7 @@ def k05_fandyr(prs):
                   "size": 14, "color": GREY, "align": PP_ALIGN.CENTER},
                  {"text": "для детей на осетинском; «Завещание» переведено на 108 языков",
                   "size": 14, "color": GREY, "align": PP_ALIGN.CENTER}])
-    slide_number(s, 5, TOTAL)
+    slide_number(s, 6, TOTAL)
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 300, "withEffect", 0),
               tl.wipe(acc.shape_id, "right", 600, delay=200),
@@ -268,12 +285,12 @@ def k10_monument(prs):
     return s
 
 
-def k11_university(prs):
+def k14_church(prs):
     s = new_slide(prs)
-    bg = bg_cover(s, "hist_2.jpg")
-    bar, box = caption_bar(s, ["Северо-Осетинский университет имени К. Л. Хетагурова",
-                               "Имя поэта носят университеты, сёла и улицы по всему Кавказу,",
-                               "а его «Ирон фæндыр» переведён на десятки языков мира."])
+    bg = bg_cover(s, "church_4.jpg")
+    bar, box = caption_bar(s, ["Осетинская горка — последний приют поэта",
+                               "Народ перенёс прах Коста с Кубани во Владикавказ и схоронил в ограде",
+                               "старейшего храма города — Осетинской церкви Рождества Богородицы."])
     tl = Timeline()
     tl.group([tl.fade(bg.shape_id, 400, "withEffect", 0),
               tl.fade(bar.shape_id, 500, delay=300),
@@ -316,26 +333,27 @@ def main():
     k01_title(prs)
     k02_photo(prs)
     k03_nar(prs)
+    k04_nar_village(prs)
     k04_study(prs)
     k05_fandyr(prs)
     from PIL import Image
     specs = [
-        (6, "paint_istochnik.jpg", "«К источнику»", "push_r",
+        (7, "paint_istochnik.jpg", "«К источнику»", "push_r",
          "холст, масло — Северо-Осетинский художественный музей",
          "Тяжёлый труд горской женщины — одна из главных тем кисти Коста."),
-        (7, "paint_deti.jpg", "«Дети-каменщики»", "wipe_l",
+        (8, "paint_deti.jpg", "«Дети-каменщики»", "wipe_l",
          "1886–1891, холст, масло, 194×139 см",
          "Незавершённый шедевр о детском труде, написанный до первой ссылки."),
-        (8, "paint_stolovaya.jpg", "«Столовая гора»", "strips",
+        (9, "paint_stolovaya.jpg", "«Столовая гора»", "strips",
          "пейзаж, холст, масло",
          "Горы вокруг Владикавказа — родной пейзаж поэта."),
-        (9, "paint_most.jpg", "«Природный мост»", "wedge",
+        (10, "paint_most.jpg", "«Природный мост»", "wedge",
          "пейзаж, холст, масло — музей им. М. С. Туганова",
          "Коста исходил ущелья Кавказа и запечатлел его чудеса."),
-        (10, "paint_angel.jpg", "«Скорбящий ангел»", "cover_r",
+        (11, "paint_angel.jpg", "«Скорбящий ангел»", "cover_r",
          "холст, масло — церковная живопись Коста",
          "Он расписывал храмы и положил начало фресковой живописи Осетии."),
-        (11, "paint_self.jpg", "Автопортрет", "comb",
+        (12, "paint_self.jpg", "Автопортрет", "comb",
          "холст, масло — Северо-Осетинский художественный музей",
          "Художник смотрит на нас через столетие."),
     ]
@@ -348,7 +366,7 @@ def main():
         w = Emu(int(h * iw / ih))
         gallery(prs, num, name, w, h, cap, tr, note, desc)
     k10_monument(prs)
-    k11_university(prs)
+    k14_church(prs)
     k12_final(prs)
 
     out = os.path.join(HERE, "Kosta_Hetagurov.pptx")
