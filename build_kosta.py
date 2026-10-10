@@ -135,13 +135,15 @@ def k01_title(prs):
 def k02_photo(prs):
     s = new_slide(prs)
     bg = dark_bg(s)
-    photo = pic(s, "kosta_photo.jpg", Inches(1.3), Inches(1.1), h=Inches(5.3),
+    photo = pic(s, "photo_student_full.jpg", Inches(1.3), Inches(1.0), h=Inches(5.5),
                 frame=GOLD, frame_w=Pt(3))
     head = text(s, Inches(6.0), Inches(1.7), Inches(6.6), Inches(1.6),
                 [{"text": "Коста Леванович", "size": 34, "bold": True, "color": WHITE},
                  {"text": "Хетагуров", "size": 34, "bold": True, "color": WHITE}])
     sub = text(s, Inches(6.0), Inches(3.4), Inches(6.6), Inches(3.2),
-               [{"text": "Родился 15 октября 1859 года", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
+               [{"text": "На фото — молодой Коста, студент.", "size": 14, "color": GREY,
+                 "space_after": 10},
+                {"text": "Родился 15 октября 1859 года", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
                 {"text": "в горном ауле Нар.", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE),
                  "space_after": 10},
                 {"text": "Учился живописи в Петербургской", "size": 16, "color": RGBColor(0xD8, 0xCE, 0xBE)},
